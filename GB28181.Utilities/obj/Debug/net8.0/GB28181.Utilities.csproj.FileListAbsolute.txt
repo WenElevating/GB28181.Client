@@ -1,0 +1,12 @@
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.csproj.AssemblyReference.cache
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.AssemblyInfoInputs.cache
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.AssemblyInfo.cs
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.csproj.CoreCompileInputs.cache
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\bin\Debug\net8.0\GB28181.Utilities.deps.json
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\bin\Debug\net8.0\GB28181.Utilities.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\bin\Debug\net8.0\GB28181.Utilities.pdb
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\refint\GB28181.Utilities.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.pdb
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\ref\GB28181.Utilities.dll
