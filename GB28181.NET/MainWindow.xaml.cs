@@ -17,7 +17,7 @@ namespace GB28181.NET
     /// </summary>
     public partial class MainWindow : Window
     {
-        private BaseViewModel _viewModel;
+        private readonly BaseViewModel _viewModel;
 
         public MainWindow()
         {
