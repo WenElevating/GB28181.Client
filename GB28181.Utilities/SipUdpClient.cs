@@ -58,11 +58,12 @@ namespace GB28181.Utilities
         /// <param name="homeIp">本机IP</param>
         /// <param name="homePort">本机端口</param>
         /// <param name="sipId"></param>
-        public SipUdpClient(IPEndPoint? local = null, string sipId = "34020000002000000001")
+        public SipUdpClient(IPEndPoint? remote, IPEndPoint? local = null, string sipId = "34020000002000000001")
         {
             logger = factory.CreateLogger("Device");
 
             var address = util.IPAddressHelper.GetIPV4Adress();
+            _remoteEndPoint = remote;
             _localEndPoint = local ?? new IPEndPoint(IPAddress.Parse(address ?? "127.0.0.1") , 50001);
             _sipId = sipId;
             _deviceManager = new DeviceManager();
@@ -120,7 +121,7 @@ namespace GB28181.Utilities
         /// </summary>
         /// <param name="Username"></param>
         /// <exception cref="ApplicationException"></exception>
-        public void Registry(string Username, IPEndPoint remote)
+        public void Registry(string Username)
         {
             if (string.IsNullOrEmpty(Username))
             {
@@ -129,7 +130,6 @@ namespace GB28181.Utilities
 
             Device? device = _deviceManager.GetDevice(Username);
 
-            _remoteEndPoint = remote;
 
             var userAgent = new SIPRegistrationUserAgent(
                 _transport,
@@ -138,7 +138,7 @@ namespace GB28181.Utilities
                 null,
                 device?.Password,
                 _realm,
-                $"{_remoteEndPoint.Address}:{_remoteEndPoint.Port}",
+                $"{_remoteEndPoint?.Address}:{_remoteEndPoint?.Port}",
                 new SIPURI(SIPSchemesEnum.sip, _remoteEndPoint.Address, _remoteEndPoint.Port),
                 device.Expiry,
                 null);
@@ -224,8 +224,10 @@ namespace GB28181.Utilities
 
                         await _transport.SendRequestAsync(request);
                     }
-                    Debug.WriteLine("触发保活机制...");
-                    await Task.Delay(60 * 1000);
+                    if (deviceList != null)
+                    {
+                        await Task.Delay(60 * 1000);
+                    }
                 }
             }
             catch (Exception ex)

@@ -4,6 +4,7 @@ using GB28181.Utilities;
 using GB28181.Utilities.util;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using Org.BouncyCastle.Utilities.Net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +26,7 @@ namespace GB28181.NET.ViewModels
 
         public MainWindowViewModel()
         {
-            _udpClient = new SipUdpClient();
+
         }
 
         [RelayCommand]
@@ -72,9 +73,10 @@ namespace GB28181.NET.ViewModels
 
                 string address = await IPAddressHelper.GetIPV4AdressAsync();
                 Device device = Device.CreateDevice("34020000002110000005", "13579wmm", address, 50003);
-                device.AddChannel("34020000002110000007", FilePath);
+                device.AddChannel("34020000002110000007", "rtsp://admin:admin12345@192.168.1.239:554/h264/ch1/main/av_stream");
+                _udpClient = new SipUdpClient(new IPEndPoint(System.Net.IPAddress.Parse(address), 15060));
                 _udpClient.AddDevice(device);
-                _udpClient.Registry(device.Username, new IPEndPoint(IPAddress.Parse(address), 15060));
+                _udpClient.Registry(device.Username);
             }
             catch (Exception ex)
             {
