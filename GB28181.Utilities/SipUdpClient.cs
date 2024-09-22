@@ -14,6 +14,8 @@ using System.Net;
 using SIPSorcery.Sys;
 using System.Xml;
 using System.Reflection.Metadata;
+using System.Diagnostics;
+using GB28181.Utilities.util;
 
 namespace GB28181.Utilities
 {
@@ -27,8 +29,6 @@ namespace GB28181.Utilities
 
         // 日志
         public ILogger logger;
-
-        private ConcurrentDictionary<string, Device> _deviceDictionary;
 
         private SIPTransport _transport;
 
@@ -62,9 +62,9 @@ namespace GB28181.Utilities
         {
             logger = factory.CreateLogger("Device");
 
-            _localEndPoint = local ?? new IPEndPoint( IPAddress.Loopback ,50001);
+            var address = util.IPAddressHelper.GetIPV4Adress();
+            _localEndPoint = local ?? new IPEndPoint(IPAddress.Parse(address ?? "127.0.0.1") , 50001);
             _sipId = sipId;
-            _deviceDictionary = new();
             _deviceManager = new DeviceManager();
 
             _transport = new SIPTransport();
@@ -77,8 +77,6 @@ namespace GB28181.Utilities
 
             _keepLiveToken = new CancellationTokenSource();
             _keepLiveTask = Task.Factory.StartNew(MainKeepLiveLoop, _keepLiveToken.Token);
-
-
         }
 
         public void AddDevice(Device device)
@@ -97,8 +95,13 @@ namespace GB28181.Utilities
                 throw new ApplicationException("通道id不能为空！");
             }
 
-            List<Device> devices = _deviceDictionary.Values.ToList();
-            
+            List<Device>? devices = _deviceManager?.GetAllDevices();
+
+            if (devices == null)
+            {
+                return null;
+            }
+
             foreach (Device device in devices)
             {
                 var channels = device.Channels;
@@ -191,13 +194,21 @@ namespace GB28181.Utilities
                 var rad = new Random();
                 while (_keepLiveToken != null && !_keepLiveToken.IsCancellationRequested)
                 {
-                    foreach (var item in _deviceDictionary)
+                    var deviceList = _deviceManager.GetAllDevices();
+
+                    if (deviceList == null)
                     {
-                        var device = item.Value;
+                        await Task.Delay(1);
+                        continue;
+                    }
+
+                    foreach (var item in deviceList)
+                    {
+                        var device = item;
 
                         SIPURI srcUri = new(device.Username, $"{device.HomeIp}:{device.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp);
 
-                        SIPURI dstUri = new("34020000002000000001", $"{_remoteEndPoint.Address} : {_remoteEndPoint.Port}", null);
+                        SIPURI dstUri = new("34020000002000000001", $"{_remoteEndPoint?.Address} : {_remoteEndPoint?.Port}", null);
 
                         SIPRequest request = SIPRequest.GetRequest(SIPMethodsEnum.MESSAGE, dstUri, new SIPToHeader(null, dstUri, null), new SIPFromHeader(null, srcUri, CallProperties.CreateNewTag()));
 
@@ -213,12 +224,14 @@ namespace GB28181.Utilities
 
                         await _transport.SendRequestAsync(request);
                     }
-                    Thread.Sleep(60 * 1000);
+                    Debug.WriteLine("触发保活机制...");
+                    await Task.Delay(60 * 1000);
                 }
             }
             catch (Exception ex)
             {
                 logger.LogError($"[{System.Reflection.MethodBase.GetCurrentMethod()?.Name}]：" + ex.Message);
+                Debug.WriteLine(ex.Message);
                 _keepLiveToken.Cancel();
                 await _keepLiveTask;
             }
@@ -233,7 +246,7 @@ namespace GB28181.Utilities
         /// <returns></returns>
         private async Task Transport_SIPTransportRequestReceived(SIPEndPoint localSIPEndPoint, SIPEndPoint remoteEndPoint, SIPRequest sipRequest)
         {
-            logger.LogInformation($"receive message: {sipRequest}");
+            Debug.WriteLine($"receive message: {sipRequest}");
 
             if (sipRequest.Method == SIPMethodsEnum.MESSAGE)
             {
@@ -416,7 +429,7 @@ namespace GB28181.Utilities
         /// <param name="sipResponse"></param>
         private void Transport_SIPResponseInTraceEvent(SIPEndPoint localSIPEndPoint, SIPEndPoint remoteEndPoint, SIPResponse sipResponse)
         {
-            Console.WriteLine($"收到响应：{remoteEndPoint}->{localSIPEndPoint}: {sipResponse.Status}");
+            Debug.WriteLine($"收到响应：{remoteEndPoint}->{localSIPEndPoint}: {sipResponse.Status}");
         }
 
         /// <summary>
@@ -427,7 +440,7 @@ namespace GB28181.Utilities
         /// <param name="sipRequest"></param>
         private void Transport_SIPRequestOutTraceEvent(SIPEndPoint localSIPEndPoint, SIPEndPoint remoteEndPoint, SIPRequest sipRequest)
         {
-            Console.WriteLine($"发出请求：{localSIPEndPoint}->{localSIPEndPoint}: {sipRequest.StatusLine}");
+            Debug.WriteLine($"发出请求：{localSIPEndPoint}->{remoteEndPoint}: {sipRequest.StatusLine}");
         }
         #endregion
 
@@ -441,6 +454,7 @@ namespace GB28181.Utilities
         {
             //GenerateChannel();
             logger.LogInformation($"{response}");
+            Debug.WriteLine($"{response}");
         }
 
         /// <summary>
@@ -450,7 +464,7 @@ namespace GB28181.Utilities
         /// <param name="response"></param>
         private void UserAgent_RegistrationRemoved(SIPURI uri, SIPResponse response)
         {
-            Console.WriteLine($"{uri} registration failed.");
+            Debug.WriteLine($"{uri} registration failed.");
         }
 
         /// <summary>
@@ -461,7 +475,7 @@ namespace GB28181.Utilities
         /// <param name="msg"></param>
         private void UserAgent_RegistrationTemporaryFailure(SIPURI uri, SIPResponse response, string msg)
         {
-            Console.WriteLine($"{uri}: {msg}");
+            Debug.WriteLine($"{uri}: {msg}");
         }
 
         /// <summary>
@@ -473,6 +487,7 @@ namespace GB28181.Utilities
         private void UserAgent_RegistrationFailed(SIPURI uri, SIPResponse response, string err)
         {
             logger.LogError($"{uri}: {response},{err}");
+            Debug.WriteLine($"{uri}: {response},{err}");
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
@@ -40,7 +41,8 @@ namespace GB28181.Utilities
 
             if (device.Username.IsEmpty() || s_deivce_list.ContainsKey(device.Username))
             {
-                throw new ApplicationException("设备没有添加或已存在唯一标识！");
+                Debug.WriteLine("设备已存在！");
+                return;
             }
 
             s_deivce_list.TryAdd(device.Username, device);

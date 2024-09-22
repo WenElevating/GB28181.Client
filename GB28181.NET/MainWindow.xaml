@@ -5,11 +5,31 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:GB28181.NET"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="clr-namespace:GB28181.NET.ViewModels"
     Title="MainWindow"
     Width="800"
     Height="450"
+    d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
     mc:Ignorable="d">
     <Grid>
-        <Button Content="测试" />
+        <StackPanel Orientation="Vertical">
+            <StackPanel
+                Margin="5"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <TextBlock Text="文件地址：" />
+                <TextBox
+                    Width="120"
+                    Margin="0,0,10,0"
+                    IsReadOnly="True"
+                    Text="{Binding FilePath}" />
+                <Button Command="{Binding UploadSystemFileCommand}" Content="上传文件" />
+            </StackPanel>
+            <Button
+                Width="120"
+                Height="30"
+                Command="{Binding PushVideoStreamCommand}"
+                Content="推流" />
+        </StackPanel>
     </Grid>
 </Window>

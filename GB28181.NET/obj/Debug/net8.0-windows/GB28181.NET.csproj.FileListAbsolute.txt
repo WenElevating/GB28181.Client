@@ -28,3 +28,12 @@ C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\obj\Debug\net8.0-windows\ref
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\obj\Debug\net8.0-windows\GB28181.NET.pdb
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\obj\Debug\net8.0-windows\GB28181.NET.genruntimeconfig.cache
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\obj\Debug\net8.0-windows\ref\GB28181.NET.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\FFmpeg.AutoGen.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\Microsoft.Extensions.DependencyInjection.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\Microsoft.Extensions.Logging.Debug.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\Microsoft.Extensions.Options.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\Microsoft.Extensions.Primitives.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\GB28181.Utilities.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\GB28181.Utilities.pdb
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\obj\Debug\net8.0-windows\GB28181.NET.sourcelink.json

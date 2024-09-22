@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using GB28181.NET.ViewModels;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,9 +17,13 @@ namespace GB28181.NET
     /// </summary>
     public partial class MainWindow : Window
     {
+        private BaseViewModel _viewModel;
+
         public MainWindow()
         {
             InitializeComponent();
+            _viewModel = new MainWindowViewModel();
+            DataContext = _viewModel;
         }
     }
 }

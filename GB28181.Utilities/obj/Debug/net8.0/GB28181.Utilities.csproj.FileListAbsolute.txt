@@ -10,3 +10,4 @@ C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB281
 C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\refint\GB28181.Utilities.dll
 C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.pdb
 C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\ref\GB28181.Utilities.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.Utilities\obj\Debug\net8.0\GB28181.Utilities.sourcelink.json
