@@ -19,5 +19,4 @@
 - [ ] SIP日志界面 
 ****
 以下是推流效果（推流较短的视频会出现问题，未解决）：
-![image](https://github.com/user-attachments/assets/36e2dc40-9153-44cc-9b84-354d2b4e758f)
 
