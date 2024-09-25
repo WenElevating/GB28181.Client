@@ -1,4 +1,4 @@
-# GB28181.Client
+![image](https://github.com/user-attachments/assets/d191a692-f55f-40c0-8b8b-c1e40b7b34b8)# GB28181.Client
 #### 这是一个基于SipSorcery的GB28181国标客户端  
 以下是该客户端需要实现的功能：  
 - [x] 设备注册
@@ -17,3 +17,6 @@
 - [ ] 主界面
 - [ ] 设备添加/修改/删除/注册页面
 - [ ] SIP日志界面 
+****
+以下是推流效果（推流较短的视频会出现问题，未解决）：
+![Uploading image.png…](接收推流邀请)
