@@ -17,7 +17,7 @@ namespace GB28181.NET.ViewModels
 {
     public partial class MainWindowViewModel : BaseViewModel
     {
-        private SipUdpClient _udpClient;
+        private SipUdpClient client;
 
         private string _fileExtension = "MP4 File|*.mp4";
 
@@ -74,9 +74,9 @@ namespace GB28181.NET.ViewModels
                 string address = await IPAddressHelper.GetIPV4AdressAsync();
                 Device device = Device.CreateDevice("34020000002110000005", "13579wmm", address, 50003);
                 device.AddChannel("34020000002110000007", "rtsp://admin:admin12345@192.168.1.239:554/h264/ch1/main/av_stream");
-                _udpClient = new SipUdpClient(new IPEndPoint(System.Net.IPAddress.Parse(address), 15060));
-                _udpClient.AddDevice(device);
-                _udpClient.Registry(device.Username);
+                client = new SipUdpClient();
+                client.AddDevice(device);
+                client.Connect(new IPEndPoint(System.Net.IPAddress.Parse(address), 15060));
             }
             catch (Exception ex)
             {

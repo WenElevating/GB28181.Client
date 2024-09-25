@@ -30,6 +30,8 @@ namespace GB28181.Utilities
         // 日志
         public ILogger logger;
 
+        public bool IsConnectServer;
+
         private SIPTransport _transport;
 
         private SIPUDPChannel _channel;
@@ -58,12 +60,11 @@ namespace GB28181.Utilities
         /// <param name="homeIp">本机IP</param>
         /// <param name="homePort">本机端口</param>
         /// <param name="sipId"></param>
-        public SipUdpClient(IPEndPoint? remote, IPEndPoint? local = null, string sipId = "34020000002000000001")
+        public SipUdpClient(IPEndPoint? local = null, string sipId = "34020000002000000001")
         {
             logger = factory.CreateLogger("Device");
 
             var address = util.IPAddressHelper.GetIPV4Adress();
-            _remoteEndPoint = remote;
             _localEndPoint = local ?? new IPEndPoint(IPAddress.Parse(address ?? "127.0.0.1") , 50001);
             _sipId = sipId;
             _deviceManager = new DeviceManager();
@@ -73,11 +74,8 @@ namespace GB28181.Utilities
             _transport.SIPResponseInTraceEvent += Transport_SIPResponseInTraceEvent;
             _transport.SIPTransportRequestReceived += Transport_SIPTransportRequestReceived;
 
-            _channel = new SIPUDPChannel(_localEndPoint);
+            _channel = new SIPUDPChannel(_localEndPoint.Address, _localEndPoint.Port);
             _transport.AddSIPChannel(_channel);
-
-            _keepLiveToken = new CancellationTokenSource();
-            _keepLiveTask = Task.Factory.StartNew(MainKeepLiveLoop, _keepLiveToken.Token);
         }
 
         public void AddDevice(Device device)
@@ -117,34 +115,56 @@ namespace GB28181.Utilities
 
 
         /// <summary>
-        /// 设备注册
+        /// 连接服务端
         /// </summary>
-        /// <param name="Username"></param>
-        /// <exception cref="ApplicationException"></exception>
-        public void Registry(string Username)
+        /// <param name="server"></param>
+        public void Connect(IPEndPoint? server)
         {
-            if (string.IsNullOrEmpty(Username))
+            try
             {
-                throw new ApplicationException("通道id不能为空！");
+                _remoteEndPoint = server ?? new IPEndPoint(address: _localEndPoint?.Address ?? IPAddress.Any, 15060);
+
+                // 注册所有设备
+                var deviceList = _deviceManager.GetAllDevices();
+
+                if (_remoteEndPoint == null)
+                {
+                    throw new("服务端地址不正确，请重试!");
+                }
+
+                deviceList?.ForEach((device) =>
+                {
+                    var serverAddress = _remoteEndPoint.Address;
+                    var serverPort = _remoteEndPoint.Port;
+
+                    var userAgent = new SIPRegistrationUserAgent(
+                    _transport,
+                    null,
+                    new SIPURI(device?.Username, $"{device?.HomeIp}:{device?.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp),
+                    null,
+                    device?.Password,
+                    _realm,
+                    $"{serverAddress}:{serverPort}",
+                    new SIPURI(SIPSchemesEnum.sip, serverAddress, serverPort),
+                    device?.Expiry ?? 120,
+                    null);
+
+                    userAgent.Start();
+                    userAgent.Stop();
+                });
+
+                // 注册完成后启动心跳服务
+                if (_keepLiveToken == null)
+                {
+                    _keepLiveToken = new CancellationTokenSource();
+                    _keepLiveTask = Task.Factory.StartNew(MainKeepLiveLoop, _keepLiveToken.Token);
+                }
             }
-
-            Device? device = _deviceManager.GetDevice(Username);
-
-
-            var userAgent = new SIPRegistrationUserAgent(
-                _transport,
-                null,
-                new SIPURI(device?.Username, $"{device?.HomeIp}:{device?.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp),
-                null,
-                device?.Password,
-                _realm,
-                $"{_remoteEndPoint?.Address}:{_remoteEndPoint?.Port}",
-                new SIPURI(SIPSchemesEnum.sip, _remoteEndPoint.Address, _remoteEndPoint.Port),
-                device.Expiry,
-                null);
-
-            userAgent.Start();
-            userAgent.Stop();
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                throw;
+            }
         }
 
 
@@ -194,21 +214,13 @@ namespace GB28181.Utilities
                 var rad = new Random();
                 while (_keepLiveToken != null && !_keepLiveToken.IsCancellationRequested)
                 {
-                    var deviceList = _deviceManager.GetAllDevices();
-
-                    if (deviceList == null)
-                    {
-                        await Task.Delay(1);
-                        continue;
-                    }
-
-                    foreach (var item in deviceList)
+                    foreach (var item in _deviceManager.GetAllDevices())
                     {
                         var device = item;
 
                         SIPURI srcUri = new(device.Username, $"{device.HomeIp}:{device.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp);
 
-                        SIPURI dstUri = new("34020000002000000001", $"{_remoteEndPoint?.Address} : {_remoteEndPoint?.Port}", null);
+                        SIPURI dstUri = new("34020000002000000001", $"{_remoteEndPoint?.Address}:{_remoteEndPoint?.Port}", null);
 
                         SIPRequest request = SIPRequest.GetRequest(SIPMethodsEnum.MESSAGE, dstUri, new SIPToHeader(null, dstUri, null), new SIPFromHeader(null, srcUri, CallProperties.CreateNewTag()));
 
@@ -224,10 +236,7 @@ namespace GB28181.Utilities
 
                         await _transport.SendRequestAsync(request);
                     }
-                    if (deviceList != null)
-                    {
-                        await Task.Delay(60 * 1000);
-                    }
+                    Thread.Sleep(60 * 1000);
                 }
             }
             catch (Exception ex)
