@@ -392,7 +392,7 @@ namespace GB28181.Utilities
 
                 channel.PushPort = media[0].Port;
 
-                var dstUri = new SIPURI("34020000002000000001", $"{_remoteEndPoint?.Address} : {_remoteEndPoint?.Port}", null);
+                var dstUri = new SIPURI("34020000002000000001", $"{_remoteEndPoint?.Address}:{_remoteEndPoint?.Port}", null);
 
                 SIPResponse response = SIPResponse.GetResponse(sipRequest, SIPResponseStatusCodesEnum.Ok, null);
 

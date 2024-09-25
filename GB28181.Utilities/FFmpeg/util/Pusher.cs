@@ -81,7 +81,7 @@ namespace GB28181.Utilities
         /// </summary>
         public async Task PushStreamAsync(string url)
         {
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 _sendPacketToken = new CancellationTokenSource();
 

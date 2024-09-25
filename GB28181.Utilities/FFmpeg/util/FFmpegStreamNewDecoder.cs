@@ -144,6 +144,7 @@ namespace GB28181.Utilities
                 {
                     OnPacket?.Invoke(ref *packet);
                 }
+                Thread.Sleep(40);
             }
         }
 

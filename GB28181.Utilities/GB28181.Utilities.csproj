@@ -14,4 +14,52 @@
     <PackageReference Include="SIPSorcery" Version="6.2.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="FFmpeg\bin\x64\avcodec-61.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x64\avdevice-61.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x64\avfilter-10.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x64\avformat-61.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x64\avutil-59.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x64\swresample-5.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x64\swscale-8.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\avcodec-59.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\avdevice-59.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\avfilter-8.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\avformat-59.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\avutil-57.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\postproc-56.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\swresample-4.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FFmpeg\bin\x86\swscale-6.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
