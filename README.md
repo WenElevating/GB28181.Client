@@ -19,6 +19,7 @@
 - [ ] SIP日志界面 
 ****
 以下是目标框图:
-![image](https://github.com/user-attachments/assets/b40c7aee-430e-4d31-810e-eb0d159f6a15)
+![struct](https://github.com/user-attachments/assets/6444e341-4529-45dc-b4a2-aecf099426a9)
+
 
 
