@@ -18,5 +18,7 @@
 - [ ] 设备添加/修改/删除/注册页面
 - [ ] SIP日志界面 
 ****
-以下是推流效果（推流较短的视频会出现问题，未解决）：
+以下是目标框图:
+![image](https://github.com/user-attachments/assets/b40c7aee-430e-4d31-810e-eb0d159f6a15)
+
 
