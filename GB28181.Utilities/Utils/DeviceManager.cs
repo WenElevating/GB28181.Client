@@ -1,4 +1,4 @@
-﻿using GB28181.Utilities.util;
+﻿using GB28181.Utilities.Models;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GB28181.Utilities
+namespace GB28181.Utilities.Utils
 {
     public class DeviceManager
     {

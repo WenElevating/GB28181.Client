@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GB28181.Utilities
+namespace GB28181.Utilities.Enums
 {
     public class SIPMessageCMDType
     {

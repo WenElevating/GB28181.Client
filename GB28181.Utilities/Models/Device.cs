@@ -19,7 +19,7 @@ using SIPSorceryMedia.Abstractions;
 using SIPSorcery.net.RTP;
 using System.Xml;
 
-namespace GB28181.Utilities
+namespace GB28181.Utilities.Models
 {
     public class Device
     {
@@ -56,7 +56,7 @@ namespace GB28181.Utilities
 
         public List<Channel> Channels { get; set; }
 
-        private Device(string username, string password, string homeIp, int homePort,string realm = "3402000000", int expiry = 120)
+        private Device(string username, string password, string homeIp, int homePort, string realm = "3402000000", int expiry = 120)
         {
             _username = username;
             _password = password;
@@ -91,9 +91,9 @@ namespace GB28181.Utilities
         /// <param name="realm">域</param>
         /// <param name="expiry">有效期</param>
         /// <returns></returns>
-        public static Device CreateDevice(string username, string password, string homeIp, int homePort,string realm = "3402000000", int expiry = 120)
+        public static Device CreateDevice(string username, string password, string homeIp, int homePort, string realm = "3402000000", int expiry = 120)
         {
-            return new Device(username, password, homeIp, homePort, realm ,expiry);
+            return new Device(username, password, homeIp, homePort, realm, expiry);
         }
 
         public static Device CreateDevice(string username, string password, string homeIp, int homePort, List<Channel> channels, string realm = "3402000000", int expiry = 120)

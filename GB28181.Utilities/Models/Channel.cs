@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GB28181.Utilities
+namespace GB28181.Utilities.Models
 {
     public class Channel
     {
@@ -23,7 +23,8 @@ namespace GB28181.Utilities
         /// <param name="channelId"></param>
         /// <param name="pushSource"></param>
         /// <param name="pushPort"></param>
-        public Channel(string channelId, string pushSource) {
+        public Channel(string channelId, string pushSource)
+        {
             _channelId = channelId;
             PushSource = pushSource;
         }

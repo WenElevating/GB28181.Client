@@ -5,7 +5,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GB28181.Utilities.util
+namespace GB28181.Utilities.Utils
 {
     public class IPAddressHelper
     {

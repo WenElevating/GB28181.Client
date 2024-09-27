@@ -15,7 +15,9 @@ using SIPSorcery.Sys;
 using System.Xml;
 using System.Reflection.Metadata;
 using System.Diagnostics;
-using GB28181.Utilities.util;
+using GB28181.Utilities.Utils;
+using GB28181.Utilities.Models;
+using GB28181.Utilities.Enums;
 
 namespace GB28181.Utilities
 {
@@ -64,7 +66,7 @@ namespace GB28181.Utilities
         {
             logger = factory.CreateLogger("Device");
 
-            var address = util.IPAddressHelper.GetIPV4Adress();
+            var address = Utils.IPAddressHelper.GetIPV4Adress();
             _localEndPoint = local ?? new IPEndPoint(IPAddress.Parse(address ?? "127.0.0.1") , 50001);
             _sipId = sipId;
             _deviceManager = new DeviceManager();
