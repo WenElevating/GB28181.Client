@@ -18,6 +18,8 @@ using System.Diagnostics;
 using GB28181.Utilities.Utils;
 using GB28181.Utilities.Models;
 using GB28181.Utilities.Enums;
+using GB28181.Utilities.Service.Registry;
+using GB28181.Utilities.Service.System;
 
 namespace GB28181.Utilities
 {
@@ -56,6 +58,10 @@ namespace GB28181.Utilities
 
         private DeviceManager _deviceManager;
 
+        private ISipRegistryService _sipRegistryService;
+
+        private IDeviceService _deviceService;
+
         /// <summary>
         /// 初始化SIP客户端
         /// </summary>
@@ -69,8 +75,9 @@ namespace GB28181.Utilities
             var address = Utils.IPAddressHelper.GetIPV4Adress();
             _localEndPoint = local ?? new IPEndPoint(IPAddress.Parse(address ?? "127.0.0.1") , 50001);
             _sipId = sipId;
-            _deviceManager = new DeviceManager();
+            _deviceManager = DeviceManager.GetInstance();
 
+            // 初始化传输和通道
             _transport = new SIPTransport();
             _transport.SIPRequestOutTraceEvent += Transport_SIPRequestOutTraceEvent;
             _transport.SIPResponseInTraceEvent += Transport_SIPResponseInTraceEvent;
@@ -78,15 +85,15 @@ namespace GB28181.Utilities
 
             _channel = new SIPUDPChannel(_localEndPoint.Address, _localEndPoint.Port);
             _transport.AddSIPChannel(_channel);
+
+            // 初始化服务
+            _sipRegistryService = new SipRegistryService();
+            _deviceService = new DeviceService();
         }
 
-        public void AddDevice(Device device)
+        public int AddDevice(Device device)
         {
-            if (device == null)
-            {
-                return;
-            }
-            _deviceManager.AddDevice(device);
+            return _deviceService.AddDevice(device);
         }
 
         public Channel? GetChannelById(string channelId)
@@ -134,26 +141,7 @@ namespace GB28181.Utilities
                     throw new("服务端地址不正确，请重试!");
                 }
 
-                deviceList?.ForEach((device) =>
-                {
-                    var serverAddress = _remoteEndPoint.Address;
-                    var serverPort = _remoteEndPoint.Port;
-
-                    var userAgent = new SIPRegistrationUserAgent(
-                    _transport,
-                    null,
-                    new SIPURI(device?.Username, $"{device?.HomeIp}:{device?.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp),
-                    null,
-                    device?.Password,
-                    _realm,
-                    $"{serverAddress}:{serverPort}",
-                    new SIPURI(SIPSchemesEnum.sip, serverAddress, serverPort),
-                    device?.Expiry ?? 120,
-                    null);
-
-                    userAgent.Start();
-                    userAgent.Stop();
-                });
+                _sipRegistryService.RegitryAllDevices(_transport, _remoteEndPoint);
 
                 // 注册完成后启动心跳服务
                 if (_keepLiveToken == null)
@@ -216,7 +204,14 @@ namespace GB28181.Utilities
                 var rad = new Random();
                 while (_keepLiveToken != null && !_keepLiveToken.IsCancellationRequested)
                 {
-                    foreach (var item in _deviceManager.GetAllDevices())
+                    var deviceList = _deviceService.GetAllDevices();
+
+                    if (deviceList == null || deviceList.Count == 0)
+                    {
+                        return;
+                    }
+
+                    foreach (var item in deviceList)
                     {
                         var device = item;
 

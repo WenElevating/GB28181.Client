@@ -52,3 +52,6 @@ C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\FFm
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\FFmpeg\bin\x86\postproc-56.dll
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\FFmpeg\bin\x86\swresample-4.dll
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\FFmpeg\bin\x86\swscale-6.dll
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\App.config
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\GB28181.NET.dll.config
+C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\bin\Debug\net8.0-windows\log4net.dll

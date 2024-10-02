@@ -12,9 +12,25 @@ namespace GB28181.Utilities.Utils
 {
     public class DeviceManager
     {
+        public static DeviceManager? Instance;
+
+        private static object _instanceLock = new object();
+
         private readonly ConcurrentDictionary<string, Device> s_deivce_list = new();
 
-        public DeviceManager() { }
+        private DeviceManager() { }
+
+        public static DeviceManager GetInstance()
+        {
+            if (Instance == null)
+            {
+                lock (_instanceLock)
+                {
+                    Instance ??= new DeviceManager();
+                }
+            }
+            return Instance;
+        }
 
         /// <summary>
         /// 获取设备数量

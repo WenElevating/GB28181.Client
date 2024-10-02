@@ -18,9 +18,9 @@ namespace GB28181.NET.ViewModels
 {
     public partial class MainWindowViewModel : BaseViewModel
     {
-        private SipUdpClient client;
+        private SipUdpClient? client;
 
-        private string _fileExtension = "MP4 File|*.mp4";
+        private string? _fileExtension = "MP4 File|*.mp4";
 
         [ObservableProperty]
         private string _filePath = "";
@@ -81,7 +81,7 @@ namespace GB28181.NET.ViewModels
             }
             catch (Exception ex)
             {
-                App.Current.log.LogError(ex.Message);
+                App.errorLog.Error(ex);
                 Debug.WriteLine(ex.Message);
             }
         }
