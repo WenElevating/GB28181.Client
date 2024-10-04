@@ -87,7 +87,7 @@ namespace GB28181.Utilities
             _transport.AddSIPChannel(_channel);
 
             // 初始化服务
-            _sipRegistryService = new SipRegistryService();
+            _sipRegistryService = new SipRegistryService(_transport);
             _deviceService = new DeviceService();
         }
 
@@ -141,7 +141,7 @@ namespace GB28181.Utilities
                     throw new("服务端地址不正确，请重试!");
                 }
 
-                _sipRegistryService.RegitryAllDevices(_transport, _remoteEndPoint);
+                _sipRegistryService.RegistryAllDevices(_remoteEndPoint);
 
                 // 注册完成后启动心跳服务
                 if (_keepLiveToken == null)

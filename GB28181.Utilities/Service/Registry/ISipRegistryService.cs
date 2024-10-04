@@ -14,9 +14,15 @@ namespace GB28181.Utilities.Service.Registry
         /// <summary>
         /// 注册设备
         /// </summary>
-        /// <param name="transport">通道</param>
         /// <param name="server">服务端地址</param>
         /// <param name="realm">域</param>
-        void RegitryAllDevices(SIPTransport transport, IPEndPoint server, string realm = "");
+        void RegistryAllDevices(string realm = "");
+
+        /// <summary>
+        /// 获取设备注册状态
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        bool GetDeviceRegistryStatusByUsername(string username);
     }
 }
