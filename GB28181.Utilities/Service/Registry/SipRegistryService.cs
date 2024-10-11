@@ -90,7 +90,7 @@ namespace GB28181.Utilities.Service.Registry
             }
         }
 
-        public void RegistryAllDevices(string realm = "")
+        public void RegisterDevices(string realm = "")
         {
             try
             {

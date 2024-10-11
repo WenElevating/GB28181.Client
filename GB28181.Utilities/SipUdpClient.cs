@@ -87,7 +87,6 @@ namespace GB28181.Utilities
             _transport.AddSIPChannel(_channel);
 
             // 初始化服务
-            _sipRegistryService = new SipRegistryService(_transport);
             _deviceService = new DeviceService();
         }
 
@@ -133,15 +132,14 @@ namespace GB28181.Utilities
             {
                 _remoteEndPoint = server ?? new IPEndPoint(address: _localEndPoint?.Address ?? IPAddress.Any, 15060);
 
-                // 注册所有设备
-                var deviceList = _deviceManager.GetAllDevices();
-
                 if (_remoteEndPoint == null)
                 {
                     throw new("服务端地址不正确，请重试!");
                 }
 
-                _sipRegistryService.RegistryAllDevices(_remoteEndPoint);
+                _sipRegistryService = new SipRegistryService(_transport, _remoteEndPoint);
+
+                _sipRegistryService.RegisterDevices();
 
                 // 注册完成后启动心跳服务
                 if (_keepLiveToken == null)
