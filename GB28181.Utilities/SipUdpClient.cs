@@ -139,7 +139,7 @@ namespace GB28181.Utilities
 
                 _sipRegistryService = new SipRegistryService(_transport, _remoteEndPoint);
 
-                _sipRegistryService.RegisterDevices();
+                _sipRegistryService.RegistryAllDevice();
 
                 // 注册完成后启动心跳服务
                 if (_keepLiveToken == null)

@@ -15,7 +15,7 @@ using SIPSorcery.Net;
 
 namespace GB28181.Utilities.Service.Registry
 {
-    public class SipRegistryService : ISipRegistryService, IDisposable
+    public class SipRegistryService : AbstractRegistryService
     {
         /// <summary>
         /// 设备管理服务
@@ -34,8 +34,10 @@ namespace GB28181.Utilities.Service.Registry
 
         private bool disposedValue;
 
-        public SipRegistryService(SIPTransport transport, IPEndPoint server)
+        public SipRegistryService(SIPTransport transport, IPEndPoint server, bool isAuto = false) : base(isAuto)
         {
+            DestinationAddress = server.Address;
+            DesinationPort = server.Port;
             _deviceService = new DeviceService();
             _agentDic = [];
             _transport = transport;
@@ -44,6 +46,12 @@ namespace GB28181.Utilities.Service.Registry
             // 启动心跳服务
             _deviceHeartBeatTokenSource = new CancellationTokenSource();
             _deviceHeartBeatTask = Task.Run(HeartBeatLoop);
+
+            // 自动注册
+            if (IsAutoRegister)
+            {
+
+            }
         }
 
         private async Task HeartBeatLoop()
@@ -90,7 +98,22 @@ namespace GB28181.Utilities.Service.Registry
             }
         }
 
-        public void RegisterDevices(string realm = "")
+        private SIPRegistrationUserAgent CreateRegisterAgent(SIPTransport transport, Device? device, string realm)
+        {
+            return new SIPRegistrationUserAgent(
+                        transport,
+                        null,
+                        new SIPURI(device?.Username, $"{device?.HomeIp}:{device?.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp),
+                        null,
+                        device?.Password,
+                        realm,
+                        $"{_server.Address}:{_server.Port}",
+                        new SIPURI(SIPSchemesEnum.sip, _server.Address, _server.Port),
+                        device?.Expiry ?? 120,
+                        null);
+        }
+
+        public override void RegistryAllDevice(string realm = "")
         {
             try
             {
@@ -106,32 +129,19 @@ namespace GB28181.Utilities.Service.Registry
                 
                 deviceList.ForEach((device) =>
                 {
-                    if (!_agentDic.ContainsKey(device.Username))
+                    if (!_agentDic.TryGetValue(device.Username, out SIPRegistrationUserAgent? value))
                     {
-                        var userAgent = new SIPRegistrationUserAgent(
-                        _transport,
-                        null,
-                        new SIPURI(device?.Username, $"{device?.HomeIp}:{device?.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp),
-                        null,
-                        device?.Password,
-                        realm,
-                        $"{serverAddress}:{serverPort}",
-                        new SIPURI(SIPSchemesEnum.sip, serverAddress, serverPort),
-                        device?.Expiry ?? 120,
-                        null);
-
-                        userAgent.Start();
+                        var userAgent = CreateRegisterAgent(_transport, device, realm);
                         _agentDic.TryAdd(device.Username, userAgent);
+                        userAgent.Start();
                     }
                     else
                     {
-                        var agent = _agentDic[device.Username];
-                        if (agent != null && !agent.IsRegistered) 
-                        { 
-                            agent.Start();
+                        if (value != null && !value.IsRegistered) 
+                        {
+                            value.Start();
                         }
                     }
-
                 });
             }
             catch (Exception ex) 
@@ -141,19 +151,19 @@ namespace GB28181.Utilities.Service.Registry
             }
         }
 
-        public bool GetDeviceRegistryStatusByUsername(string username)
+        public override bool CheckRegistryStatus(string username)
         {
             if (username.IsEmpty())
             { 
                 throw new ArgumentNullException("username is null!");
             }
 
-            if (!_agentDic.ContainsKey(username))
+            if (!_agentDic.TryGetValue(username, out SIPRegistrationUserAgent? value))
             {
                 throw new ArgumentNullException("this device is not exist!");
             }
 
-            return _agentDic[username].IsRegistered;
+            return value.IsRegistered;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -186,20 +196,10 @@ namespace GB28181.Utilities.Service.Registry
             }
         }
 
-        // // TODO: 仅当“Dispose(bool disposing)”拥有用于释放未托管资源的代码时才替代终结器
-        // ~SipRegistryService()
-        // {
-        //     // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
-        //     Dispose(disposing: false);
-        // }
-
-        public void Dispose()
+        public override void Dispose()
         {
-            // 不要更改此代码。请将清理代码放入“Dispose(bool disposing)”方法中
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
-
-
     }
 }

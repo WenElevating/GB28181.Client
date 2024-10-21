@@ -16,13 +16,13 @@ namespace GB28181.Utilities.Service.Registry
         /// </summary>
         /// <param name="server">服务端地址</param>
         /// <param name="realm">域</param>
-        void RegisterDevices(string realm = "");
+        void RegistryAllDevice(string realm = "");
 
         /// <summary>
         /// 获取设备注册状态
         /// </summary>
-        /// <param name="username"></param>
+        /// <param name="deviceID"></param>
         /// <returns></returns>
-        bool GetDeviceRegistryStatusByUsername(string username);
+        bool CheckRegistryStatus(string deviceID);
     }
 }
