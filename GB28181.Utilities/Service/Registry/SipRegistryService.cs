@@ -18,16 +18,28 @@ namespace GB28181.Utilities.Service.Registry
     public class SipRegistryService : AbstractRegistryService
     {
         /// <summary>
-        /// 设备管理服务
+        /// This is a device management service
         /// </summary>
         private readonly IDeviceService _deviceService;
 
+        /// <summary>
+        /// This is a data transport
+        /// </summary>
         private readonly SIPTransport _transport;
 
+        /// <summary>
+        /// This is a user agent cache queue
+        /// </summary>
         private readonly ConcurrentDictionary<string, SIPRegistrationUserAgent> _agentDic;
 
+        /// <summary>
+        /// This is a server address
+        /// </summary>
         private readonly IPEndPoint _server;
 
+        /// <summary>
+        /// heart beat token
+        /// </summary>
         private CancellationTokenSource _deviceHeartBeatTokenSource;
 
         private Task _deviceHeartBeatTask;
@@ -69,11 +81,13 @@ namespace GB28181.Utilities.Service.Registry
                         continue;
                     }
 
+                    SIPURI srcUri;
+                    SIPURI dstUri;
                     devceList.ForEach(async (device) =>
                     {
-                        SIPURI srcUri = new(device.Username, $"{device.HomeIp}:{device.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp);
+                        srcUri = new(device.Username, $"{device.HomeIp}:{device.HomePort}", null, SIPSchemesEnum.sip, SIPProtocolsEnum.udp);
 
-                        SIPURI dstUri = new("34020000002000000001", $"{_server?.Address}:{_server?.Port}", null);
+                        dstUri = new("34020000002000000001", $"{_server?.Address}:{_server?.Port}", null);
 
                         SIPRequest request = SIPRequest.GetRequest(SIPMethodsEnum.MESSAGE, dstUri, new SIPToHeader(null, dstUri, null), new SIPFromHeader(null, srcUri, CallProperties.CreateNewTag()));
 

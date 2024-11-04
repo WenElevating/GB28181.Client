@@ -7,7 +7,42 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\DeviceListPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\Dialogs\AddDeviceDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MainPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\MediaPlayerPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\SipSettingPage.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
     <Page Update="MainWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Resources\GlobalNormalTheme.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\DeviceListPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\Dialogs\AddDeviceDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MainPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\MediaPlayerPage.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\SipSettingPage.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

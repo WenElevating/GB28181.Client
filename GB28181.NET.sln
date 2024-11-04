@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GB28181.NET", "GB28181.NET\GB28181.NET.csproj", "{61DEC634-380F-4EC3-903B-BBC155A06C86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GB28181.NET", "GB28181.NET\GB28181.NET.csproj", "{61DEC634-380F-4EC3-903B-BBC155A06C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GB28181.Utilities", "GB28181.Utilities\GB28181.Utilities.csproj", "{27F61618-51B6-4AAD-B579-E7E013C3FCF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GB28181.Utilities", "GB28181.Utilities\GB28181.Utilities.csproj", "{27F61618-51B6-4AAD-B579-E7E013C3FCF0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

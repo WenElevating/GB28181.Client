@@ -18,6 +18,7 @@ using System.Runtime.InteropServices;
 using SIPSorceryMedia.Abstractions;
 using SIPSorcery.net.RTP;
 using System.Xml;
+using System.ComponentModel;
 
 namespace GB28181.Utilities.Models
 {
@@ -54,6 +55,7 @@ namespace GB28181.Utilities.Models
 
         public int Expiry { get => _expiry; }
 
+        [Browsable(false)]
         public List<Channel> Channels { get; set; }
 
         private Device(string username, string password, string homeIp, int homePort, string realm = "3402000000", int expiry = 120)

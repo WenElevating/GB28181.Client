@@ -52,13 +52,13 @@ namespace GB28181.Utilities
 
         private string _realm = "";
 
-        private CancellationTokenSource _keepLiveToken;
+        private CancellationTokenSource? _keepLiveToken;
 
-        private Task _keepLiveTask;
+        private Task? _keepLiveTask;
 
         private DeviceManager _deviceManager;
 
-        private ISipRegistryService _sipRegistryService;
+        private ISipRegistryService? _sipRegistryService;
 
         private IDeviceService _deviceService;
 
@@ -70,6 +70,7 @@ namespace GB28181.Utilities
         /// <param name="sipId"></param>
         public SipUdpClient(IPEndPoint? local = null, string sipId = "34020000002000000001")
         {
+
             logger = factory.CreateLogger("Device");
 
             var address = Utils.IPAddressHelper.GetIPV4Adress();

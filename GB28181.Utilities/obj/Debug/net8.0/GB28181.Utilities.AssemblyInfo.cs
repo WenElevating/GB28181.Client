@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("GB28181.Utilities")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0703c251f9e8bfbab4b26e4f6346c5714b0014c0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1b5cf162e9248ce2aef084f08428c1d4fbc15f7c")]
 [assembly: System.Reflection.AssemblyProductAttribute("GB28181.Utilities")]
 [assembly: System.Reflection.AssemblyTitleAttribute("GB28181.Utilities")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

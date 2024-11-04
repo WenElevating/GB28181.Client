@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using GB28181.NET.ViewModels;
+using GB28181.NET.Views;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Configuration;
 using System.Data;
 using System.Windows;
@@ -21,14 +24,36 @@ namespace GB28181.NET
 
         public static log4net.ILog errorLog = log4net.LogManager.GetLogger("ErrorLog");
 
+        public IServiceProvider serviceProvider;
+
         public App()
         {
             log = factory.CreateLogger<App>();
             operationLog.Info("启动程序...");
 
+            AppLoaded();
+        }
+
+        private void AppLoaded()
+        {
+            // 启用全局异常处理
             Application.Current.DispatcherUnhandledException += Current_DispatcherUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+            
+            // 添加IOC容器
+            IServiceCollection descriptors = new ServiceCollection();
+            // Page
+            descriptors.AddSingleton<MainPage>();
+            descriptors.AddSingleton<SipSettingPage>();
+            descriptors.AddSingleton<MediaPlayerPage>();
+            descriptors.AddSingleton<DeviceListPage>();
+            
+            // ViewModel
+            descriptors.AddSingleton<SipSettingPageViewModel>();
+            descriptors.AddSingleton<DeviceListPageViewModel>();
+            
+            serviceProvider = descriptors.BuildServiceProvider();
         }
 
         /// <summary>

@@ -13,4 +13,8 @@
     <SourceRoot Include="D:\Nuget\Packages\" />
     <SourceRoot Include="D:\Microsoft Visual Studio\Shared\NuGetPackages\" />
   </ItemGroup>
+  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <PkgMicrosoft_Xaml_Behaviors_Wpf Condition=" '$(PkgMicrosoft_Xaml_Behaviors_Wpf)' == '' ">D:\Nuget\Packages\microsoft.xaml.behaviors.wpf\1.1.39</PkgMicrosoft_Xaml_Behaviors_Wpf>
+    <PkgMaterialDesignThemes Condition=" '$(PkgMaterialDesignThemes)' == '' ">D:\Nuget\Packages\materialdesignthemes\5.1.0</PkgMaterialDesignThemes>
+  </PropertyGroup>
 </Project>

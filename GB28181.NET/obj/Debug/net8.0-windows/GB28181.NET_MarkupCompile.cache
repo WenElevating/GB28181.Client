@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\liude\source\repos\GB28181.NET\GB28181.NET\App.xaml
-11407045341
+7-309572250
 
-6-1004803340
-214139175328
-MainWindow.xaml;
+17-1368558554
+2181831691283
+MainWindow.xaml;Resources\GlobalNormalTheme.xaml;Views\DeviceListPage.xaml;Views\Dialogs\AddDeviceDialog.xaml;Views\MainPage.xaml;Views\MediaPlayerPage.xaml;Views\SipSettingPage.xaml;
 
 False
 

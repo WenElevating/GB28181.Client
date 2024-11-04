@@ -27,7 +27,14 @@ namespace GB28181.NET.ViewModels
 
         public MainWindowViewModel()
         {
-
+            Task.Run(() =>
+            {
+                while (true)
+                {
+                    long now = DateTime.Now.Ticks;
+                    Thread.Sleep(100);
+                }
+            });
         }
 
         [RelayCommand]
