@@ -34,7 +34,7 @@ namespace GB28181.Utilities.Service.Registry
 
         private bool disposedValue;
 
-        public SipRegistryService(SIPTransport transport, IPEndPoint server, bool isAuto = false) : base(isAuto)
+        public SipRegistryService(SIPTransport transport, IPEndPoint server, bool isAuto = false) : base(Encoding.UTF8)
         {
             DestinationAddress = server.Address;
             DesinationPort = server.Port;
